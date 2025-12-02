@@ -4,28 +4,24 @@
  */
 
 function isValid(s) {
-  const stack = [...s];
-  const max = stack.length;
-  const last = [];
+  const chars = [...s];
+  const stack = [];
+  const pairs = {
+    "(": ")",
+    "{": "}",
+    "[": "]",
+  };
 
-  for (let i = 0; i < max; i++) {
-    const c = stack.pop();
-    const lastIndex = last.length - 1;
+  while (chars.length) {
+    const char = chars.pop();
+    const last = stack[stack.length - 1];
 
-    if (c === "(" && last[lastIndex] === ")") {
-      last.pop();
-    } else if (c === "[" && last[lastIndex] === "]") {
-      last.pop();
-    } else if (c === "{" && last[lastIndex] === "}") {
-      last.pop();
+    if (pairs[char] && pairs[char] === last) {
+      stack.pop();
     } else {
-      last.push(c);
+      stack.push(char);
     }
   }
 
-  if (last.length === 0) {
-    return true;
-  }
-
-  return false;
+  return stack.length === 0;
 }
